@@ -22,7 +22,7 @@ Le mot de passe pour phpliteadmin est "admin".
 Commande pour lancer le docker (localhost:8080/example.php) :
 
 
-docker run -ti -v "C:\Users\nichu\Desktop\HEIG-VD\Annee3\STI\Projet1\site":/usr/share/nginx/ -d -p 8080:80 --name
+docker run -ti -v "C:\Users\nichu\Desktop\HEIG-VD\Annee3\STI\STI-Projet1\STI-Projet1\site":/usr/share/nginx/ -d -p 8080:80 --name
 sti_project --hostname sti arubinst/sti:project2018
 
 
