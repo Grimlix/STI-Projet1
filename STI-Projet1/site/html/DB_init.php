@@ -26,22 +26,20 @@
     // Create table messages
     $messagesTable = "CREATE TABLE IF NOT EXISTS messages (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    dateOfReceipt DATE,
                     sender TEXT ,
                     receiver TEXT,
                     subject TEXT, 
-                    message TEXT, 
-                    time TEXT,
-                    FOREIGN KEY(sender) REFERENCES users(id),
-                    FOREIGN KEY(receiver) REFERENCES users(id))";
+                    message TEXT,          
+                    dateOfReceipt SMALLDATETIME,
+                    FOREIGN KEY(sender) REFERENCES users(username),
+                    FOREIGN KEY(receiver) REFERENCES users(username))";
 
     $file_db->exec($messagesTable);
 
     $usersTable = "CREATE TABLE IF NOT EXISTS users (
-       id INTEGER PRIMARY KEY AUTOINCREMENT, 
-       username TEXT,
+       username TEXT PRIMARY KEY,
        password TEXT,
-       role INTEGER,
+       role TEXT,
        validity INTEGER)";
 
     $file_db->exec($usersTable);

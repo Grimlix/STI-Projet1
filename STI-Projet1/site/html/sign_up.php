@@ -31,12 +31,12 @@ $file_db->setAttribute(PDO::ATTR_ERRMODE,
             $password = $_POST['password'];
 
             $create_user = "INSERT INTO users (username, password, role, validity)
-                            VALUES ('{$username}', '{$password}', 0, 0)";
+                            VALUES ('{$username}', '{$password}', 'Collaborator', 1)";
 
             $file_db->exec($create_user);
         }
 
-
+        // TODO : bouton Sign In + rediriger sur la page sign in quand on submit
 
     ?>
 
