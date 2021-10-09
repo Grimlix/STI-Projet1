@@ -40,7 +40,11 @@ if (isset($_POST['delete_button'])){
     $file_db->exec($delete_message);
 }else if(isset($_POST['answer_button'])){
     header("Location:message.php");
-    $_SESSION['messageId'] = $_POST['messageId'];;
+    $_SESSION['messageId'] = $_POST['messageId'];
+    exit();
+}else if(isset($_POST['details_button'])){
+    header("Location:message_details.php");
+    $_SESSION['messageId'] = $_POST['messageId'];
     exit();
 }
 
