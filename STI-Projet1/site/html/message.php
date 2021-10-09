@@ -45,7 +45,7 @@ $file_db->setAttribute(PDO::ATTR_ERRMODE,
             $date = date('m/d/Y h:i:s a', time());
 
             $create_message = "INSERT INTO messages (sender, receiver, subject, message, dateOfReceipt)
-                                VALUES ('{$sender}', '{$to}', '{$subject}', '{$message}' '{$date}')";
+                                VALUES ('{$sender}', '{$to}', '{$subject}', '{$message}', '{$date}')";
 
             $file_db->exec($create_message);
 

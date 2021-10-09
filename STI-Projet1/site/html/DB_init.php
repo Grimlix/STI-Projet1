@@ -27,7 +27,7 @@
                     receiver TEXT,
                     subject TEXT, 
                     message TEXT,          
-                    dateOfReceipt SMALLDATETIME,
+                    dateOfReceipt DATETIME,
                     FOREIGN KEY(sender) REFERENCES users(username),
                     FOREIGN KEY(receiver) REFERENCES users(username))";
 
