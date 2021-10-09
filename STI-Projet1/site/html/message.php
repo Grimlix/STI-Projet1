@@ -21,8 +21,9 @@ $file_db->setAttribute(PDO::ATTR_ERRMODE,
 <body>
 
 <?php
+    $receiverValue = "";
 
-
+    //Quand on appuye sur "send message"
     if (isset($_POST['submit_button_message']) && !empty($_POST['message'])
         && !empty($_POST['subject']) && !empty($_POST['to'])) {
 
@@ -30,7 +31,6 @@ $file_db->setAttribute(PDO::ATTR_ERRMODE,
         $to = $_POST['to'];
         $message = $_POST['message'];
         $sender = $_SESSION['username'];
-        echo $message;
 
         //Verification du destinataire
         $receiver = $file_db->query("SELECT username FROM users WHERE username='{$to}'")->fetch()[0];
@@ -51,10 +51,17 @@ $file_db->setAttribute(PDO::ATTR_ERRMODE,
 
 
             header("Location:messages.php");
+            $_SESSION['messageId'] = null;
             exit();
         }
 
     }
+    //quand on clique sur "answer"
+    if (isset($_SESSION['messageId'])){
+        $id = $_SESSION['messageId'];
+        $receiverValue = $file_db->query("SELECT sender FROM messages WHERE id='{$id}'")->fetch()[0];
+    }
+
 ?>
 
 
@@ -66,7 +73,7 @@ $file_db->setAttribute(PDO::ATTR_ERRMODE,
              <!-- To -->
           <li>
           <label for="to">To</label> </br>
-           <input type="text" name="to" id="to" />
+           <input type="text" name="to" id="to" value="<?= $receiverValue ?>"/>
           </li>
 
          <!-- Subject -->
