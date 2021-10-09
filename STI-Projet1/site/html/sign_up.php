@@ -8,7 +8,6 @@ $file_db->setAttribute(PDO::ATTR_ERRMODE,
 
 ?>
 
-
 <!DOCTYPE html>
 <html>
  <head>
@@ -24,7 +23,7 @@ $file_db->setAttribute(PDO::ATTR_ERRMODE,
 
     <?php
 
-        if (isset($_POST['submit']) && !empty($_POST['username'])
+        if (isset($_POST['submit_button']) && !empty($_POST['username'])
             && !empty($_POST['password'])){
 
             $username = $_POST['username'];
@@ -42,24 +41,40 @@ $file_db->setAttribute(PDO::ATTR_ERRMODE,
 
      <form role="form" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
          <div class="LoginBox">
+
+             <!-- Username -->
              <div class="form-group row">
                  <label for="inputUser" class="col-sm-2 col-form-label">Username</label>
                  <div class="col-sm-10">
                      <input type="text" class="form-control" name="username" placeholder="Username">
                  </div>
              </div>
+
+             <!-- Password -->
              <div class="form-group row">
                  <label for="inputPassword3" class="col-sm-2 col-form-label">Password</label>
                  <div class="col-sm-10">
                      <input type="password" class="form-control" name="password" placeholder="Password">
                  </div>
              </div>
+
+             <!-- Submit -->
              <div class="form-group row">
                  <div class="offset-sm-2 col-sm-10">
-                     <input type="submit" value="Create" name="submit" class="btn btn-primary"/>
+                     <input type="submit" value="Create" name="submit_button" class="btn btn-primary"/>
                  </div>
              </div>
+
+             <!-- Login page -->
+             <div class="form-group row">
+                 <div class="offset-sm-2">
+                     <input type="button" value="Sign in" name="sign_in_button" class="btn btn-primary float-right"/>
+                 </div>
+             </div>
+
          </div>
+
+
      </form>
 
 
