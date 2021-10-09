@@ -15,7 +15,8 @@ else
 		echo 'Image is already started'
 	else
 		echo 'Starting the image'
-		docker start sti_projectecho 'Starting the servers now'
+		docker start sti_project
+		echo 'Starting the servers now'
 	fi
 
 fi
