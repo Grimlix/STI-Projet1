@@ -22,24 +22,32 @@ $file_db->setAttribute(PDO::ATTR_ERRMODE,
  <body>
 
     <?php
-
         if (isset($_POST['submit_button']) && !empty($_POST['username'])
             && !empty($_POST['password'])){
 
             $username = $_POST['username'];
             $password = $_POST['password'];
 
+
+            //We make sure the username chosen is uniq
+            $check_username = $file_db->query("SELECT username FROM users WHERE username='{$username}'")->fetch();
+
+            if($check_username != false){
+                header("Location:sign_up.php?error=Username already used");
+                exit();
+            }
             $create_user = "INSERT INTO users (username, password, role, validity)
                             VALUES ('{$username}', '{$password}', 'Collaborator', 1)";
 
             $file_db->exec($create_user);
-        }
 
-        // TODO : bouton Sign In + rediriger sur la page sign in quand on submit
+            header("Location:login.php");
+            exit();
+        }
 
     ?>
 
-     <form role="form" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
+     <form role="form" method="post" action="<?php echo $_SERVER["PHP_SELF"];?>">
          <div class="LoginBox">
 
              <!-- Username -->
