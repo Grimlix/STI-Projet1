@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 // Create (connect to) SQLite database in file
 $file_db = new PDO('sqlite:/usr/share/nginx/databases/database.sqlite');
 // Set errormode to exceptions
@@ -24,19 +24,37 @@ $file_db->setAttribute(PDO::ATTR_ERRMODE,
 
 
     if (isset($_POST['submit_button_message']) && !empty($_POST['message'])
-        && !empty($_POST['subject'])){
+        && !empty($_POST['subject']) && !empty($_POST['to'])) {
 
         $subject = $_POST['subject'];
         $to = $_POST['to'];
         $message = $_POST['message'];
+        $sender = $_SESSION['username'];
+        echo $message;
 
-        $create_message = "INSERT INTO messages (sender, receiver, subject, message, dateOfReceipt)
-                                VALUES ('{$username}', '{$to}', '{$subject}', 1)";
+        //Verification du destinataire
+        $receiver = $file_db->query("SELECT username FROM users WHERE username='{$to}'")->fetch()[0];
 
-        $file_db->exec($create_message);
+        if (strcmp($receiver, $sender) == 0) {
+            header("Location:message.php?error=Wrong receiver");
+            exit();
+        } else if (!empty($receiver)) {
+            echo 'Message sent';
+
+            date_default_timezone_set('Europe/Zurich');
+            $date = date('m/d/Y h:i:s a', time());
+
+            $create_message = "INSERT INTO messages (sender, receiver, subject, message, dateOfReceipt)
+                                VALUES ('{$sender}', '{$to}', '{$subject}', '{$message}' '{$date}')";
+
+            $file_db->exec($create_message);
+
+
+            header("Location:messages.php");
+            exit();
+        }
+
     }
-
-
 ?>
 
 

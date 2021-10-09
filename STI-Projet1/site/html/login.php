@@ -1,5 +1,6 @@
 <?php
 
+session_start();
 // Create (connect to) SQLite database in file
 $file_db = new PDO('sqlite:/usr/share/nginx/databases/database.sqlite');
 // Set errormode to exceptions
@@ -40,7 +41,8 @@ $file_db->setAttribute(PDO::ATTR_ERRMODE,
         if(!empty($check_username)){
             $check_password = $file_db->query("SELECT password FROM users WHERE username='{$check_username}'")->fetch()[0];
             if($password == $check_password){
-                header("Location:messages.php");
+                header("Location:message.php");
+                $_SESSION['username'] = $username;
                 exit();
             }else{
                 header("Location:login.php?error=Wrong password");
