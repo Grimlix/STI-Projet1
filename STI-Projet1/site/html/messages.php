@@ -24,29 +24,28 @@ unset($_SESSION['messageId']);
 
 <?php
 
-/*
-->query() : requête qui ne modifie pas la base de données
-->fetch() : récupérer la donnée de la requête (toujours dans un array)
-->fetchAll() : récupère tous array[0][]
-->exec() : requête qui modifie la base de données
+    /*
+    ->query() : requête qui ne modifie pas la base de données
+    ->fetch() : récupérer la donnée de la requête (toujours dans un array)
+    ->fetchAll() : récupère tous array[0][]
+    ->exec() : requête qui modifie la base de données
 
-*/
+    */
 
-// delete button
-if (isset($_POST['delete_button'])){
-    $id = $_POST['messageId'];
-    $delete_message = "DELETE FROM messages WHERE id ='{$id}'";
-    $file_db->exec($delete_message);
-}else if(isset($_POST['answer_button'])){
-    header("Location:message.php");
-    $_SESSION['messageId'] = $_POST['messageId'];
-    exit();
-}else if(isset($_POST['details_button'])){
-    header("Location:message_details.php");
-    $_SESSION['messageId'] = $_POST['messageId'];
-    exit();
-}
-
+    // delete button
+    if (isset($_POST['delete_button'])){
+        $id = $_POST['messageId'];
+        $delete_message = "DELETE FROM messages WHERE id ='{$id}'";
+        $file_db->exec($delete_message);
+    }else if(isset($_POST['answer_button'])){
+        header("Location:message.php");
+        $_SESSION['messageId'] = $_POST['messageId'];
+        exit();
+    }else if(isset($_POST['details_button'])){
+        header("Location:message_details.php");
+        $_SESSION['messageId'] = $_POST['messageId'];
+        exit();
+    }
 ?>
 <!-- Boutons de navigation -->
 <div class="nav">
@@ -54,10 +53,13 @@ if (isset($_POST['delete_button'])){
         <input type="submit" name="button_log_out" value="Log out">
     </form>
     <form action="change_password.php" method="post">
-        <input type="submit" name="button_new_message" value="Change password">
+        <input type="submit" name="button_change_password" value="Change password">
     </form>
     <form action="message.php" method="post">
         <input type="submit" name="button_new_message" value="New message">
+    </form>
+    <form action="admin.php" method="post">
+        <input type="submit" name="button_admin" value="Admin">
     </form>
 </div>
 
