@@ -32,6 +32,16 @@ if (isset($_SESSION['messageId'])){
 
 ?>
 
+<!-- Boutons de navigation -->
+<div class="nav">
+    <form action="login.php" method="post">
+        <input type="submit" name="button_log_out" value="Log out">
+    </form>
+    <form action="messages.php" method="post">
+        <input type="submit" name="button_new_message" value="Home">
+    </form>
+</div>
+
 <div id="container" >
     <h1>Message details</h1>
     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">

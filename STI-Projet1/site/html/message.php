@@ -63,38 +63,47 @@ $file_db->setAttribute(PDO::ATTR_ERRMODE,
     }
 
 ?>
+<!-- Boutons de navigation -->
+<div class="nav">
+    <form action="login.php" method="post">
+        <input type="submit" name="button_log_out" value="Log out">
+    </form>
+    <form action="messages.php" method="post">
+        <input type="submit" name="button_new_message" value="Home">
+    </form>
+</div>
 
 
-    <div id="container" >
-        <h1>Sending message</h1>
-        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
-         <ul style="list-style-type: none;">
+<div id="container" >
+    <h1>Sending message</h1>
+    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
+     <ul style="list-style-type: none;">
 
-             <!-- To -->
-          <li>
-          <label for="to">To</label> </br>
-           <input type="text" name="to" id="to" value="<?= $receiverValue ?>"/>
-          </li>
+         <!-- To -->
+      <li>
+      <label for="to">To</label> </br>
+       <input type="text" name="to" id="to" value="<?= $receiverValue ?>"/>
+      </li>
 
-         <!-- Subject -->
-         <li>
-             <label for="subject">Subject</label> </br>
-             <input type="text" name="subject" id="subject" />
-         </li>
+     <!-- Subject -->
+     <li>
+         <label for="subject">Subject</label> </br>
+         <input type="text" name="subject" id="subject" />
+     </li>
 
-             <!-- Message Text -->
-          <li>
-           <label for="Message">Message</label> </br>
-           <textarea name="message" id="message" cols="45" rows="15"></textarea>
-          </li>
+         <!-- Message Text -->
+      <li>
+       <label for="Message">Message</label> </br>
+       <textarea name="message" id="message" cols="45" rows="15"></textarea>
+      </li>
 
-             <!-- Submit -->
-         <li><input type="submit" name="submit_button_message" id="sendMessage" value="Send Message" /></li>
+         <!-- Submit -->
+     <li><input type="submit" name="submit_button_message" id="sendMessage" value="Send Message" /></li>
 
 
-        </ul>
-       </form>
-    </div>
+    </ul>
+   </form>
+</div>
 
 </body>
 </html>

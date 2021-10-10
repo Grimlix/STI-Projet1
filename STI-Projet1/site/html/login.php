@@ -1,5 +1,6 @@
 <?php
 
+session_destroy();
 session_start();
 // Create (connect to) SQLite database in file
 $file_db = new PDO('sqlite:/usr/share/nginx/databases/database.sqlite');
@@ -7,7 +8,6 @@ $file_db = new PDO('sqlite:/usr/share/nginx/databases/database.sqlite');
 $file_db->setAttribute(PDO::ATTR_ERRMODE,
     PDO::ERRMODE_EXCEPTION);
 
-$_SESSION['messageId'] = null;
 ?>
 
 <!DOCTYPE html>
@@ -21,9 +21,6 @@ $_SESSION['messageId'] = null;
     <link rel="stylesheet" href="style.css">
 
 </head>
-
-
-
 <body>
 
 <?php
@@ -42,7 +39,7 @@ $_SESSION['messageId'] = null;
         if(!empty($check_username)){
             $check_password = $file_db->query("SELECT password FROM users WHERE username='{$check_username}'")->fetch()[0];
             if($password == $check_password){
-                header("Location:message.php");
+                header("Location:messages.php");
                 $_SESSION['username'] = $username;
                 exit();
             }else{
@@ -52,6 +49,14 @@ $_SESSION['messageId'] = null;
         }
     }
 ?>
+
+<!-- Boutons de navigation -->
+<div class="nav">
+    <form action="sign_up.php" method="post">
+        <input type="submit" name="button_log_out" value="Sign up">
+    </form>
+</div>
+
 
 <form role="form" method="post" action="login.php">
     <div class="LoginBox">
@@ -80,8 +85,6 @@ $_SESSION['messageId'] = null;
         </div>
 
     </div>
-
-
 </form>
 
 

@@ -34,6 +34,16 @@ if(isset($_POST['submit_button']) && !empty($_POST['password1'])){
 
 ?>
 
+<!-- Boutons de navigation -->
+<div class="nav">
+    <form action="login.php" method="post">
+        <input type="submit" name="button_log_out" value="Log out">
+    </form>
+    <form action="messages.php" method="post">
+        <input type="submit" name="button_new_message" value="Home">
+    </form>
+</div>
+
 <div class="container">
     <div class="row">
         <div class="col-sm-12">

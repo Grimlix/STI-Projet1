@@ -47,9 +47,19 @@ if (isset($_POST['delete_button'])){
     exit();
 }
 
-
-
 ?>
+<!-- Boutons de navigation -->
+<div class="nav">
+    <form action="login.php" method="post">
+        <input type="submit" name="button_log_out" value="Log out">
+    </form>
+    <form action="change_password.php" method="post">
+        <input type="submit" name="button_new_message" value="Change password">
+    </form>
+    <form action="message.php" method="post">
+        <input type="submit" name="button_new_message" value="New message">
+    </form>
+</div>
 
 <div class="container">
     <div class="row">
