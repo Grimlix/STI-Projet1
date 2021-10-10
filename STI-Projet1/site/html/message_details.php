@@ -30,9 +30,7 @@ if (isset($_SESSION['messageId'])){
     $dateOfReceipt = $file_db->query("SELECT dateOfReceipt FROM messages WHERE id='{$id}'")->fetch()[0];
 }
 
-
 ?>
-
 
 <div id="container" >
     <h1>Message details</h1>

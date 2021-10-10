@@ -6,7 +6,7 @@ $file_db = new PDO('sqlite:/usr/share/nginx/databases/database.sqlite');
 $file_db->setAttribute(PDO::ATTR_ERRMODE,
     PDO::ERRMODE_EXCEPTION);
 
-$_SESSION['messageId'] = null;
+unset($_SESSION['messageId']);
 ?>
 
 <!DOCTYPE html>
@@ -35,7 +35,6 @@ $_SESSION['messageId'] = null;
 // delete button
 if (isset($_POST['delete_button'])){
     $id = $_POST['messageId'];
-    echo $id;
     $delete_message = "DELETE FROM messages WHERE id ='{$id}'";
     $file_db->exec($delete_message);
 }else if(isset($_POST['answer_button'])){
