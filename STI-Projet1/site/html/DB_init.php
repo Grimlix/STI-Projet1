@@ -36,7 +36,7 @@
     $usersTable = "CREATE TABLE IF NOT EXISTS users (
        username TEXT PRIMARY KEY,
        password TEXT,
-       role TEXT,
+       roles TEXT,
        validity INTEGER)";
 
     $file_db->exec($usersTable);

@@ -32,7 +32,15 @@ unset($_SESSION['messageId']);
 
     */
 
-    // delete button
+    if(!$_SESSION['loggedIn']){
+        header("Location:login.php?error=Access without logging in");
+        exit();
+    }
+    echo "role: ";
+    echo $_SESSION['admin'];
+
+
+// delete button
     if (isset($_POST['delete_button'])){
         $id = $_POST['messageId'];
         $delete_message = "DELETE FROM messages WHERE id ='{$id}'";
@@ -58,7 +66,7 @@ unset($_SESSION['messageId']);
     <form action="message.php" method="post">
         <input type="submit" name="button_new_message" value="New message">
     </form>
-    <form action="admin.php" method="post">
+    <form <?php if (!$_SESSION['admin']){ ?> style="display:none"<?php } ?> action="admin.php" method="post">
         <input type="submit" name="button_admin" value="Admin">
     </form>
 </div>

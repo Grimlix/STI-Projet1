@@ -24,6 +24,17 @@ $file_db->setAttribute(PDO::ATTR_ERRMODE,
 <body>
 
 <?php
+    if (isset($_POST['button_log_out'])){
+        //session_destroy() ne detruit pas les variables associées à la session
+        $_SESSION = array();
+        session_destroy();
+        session_start();
+    }
+    //si le user est deja log on le redirige sur messages.php
+    if ($_SESSION['loggedIn']){
+        header('Location:messages.php?error=Already logged in');
+        exit();
+    }
 
     if (isset($_POST['sign_in_button']) && !empty($_POST['username'])
         && !empty($_POST['password'])){
@@ -34,13 +45,22 @@ $file_db->setAttribute(PDO::ATTR_ERRMODE,
 
         //We make sure the username chosen is uniq
         $check_username = $file_db->query("SELECT username FROM users WHERE username='{$username}'")->fetch()[0];
-        echo $check_username;
 
         if(!empty($check_username)){
-            $check_password = $file_db->query("SELECT password FROM users WHERE username='{$check_username}'")->fetch()[0];
-            if($password == $check_password){
+            $query = $file_db->query("SELECT password, roles FROM users WHERE username='{$check_username}'")->fetch();
+
+            $check_password = $query[0];
+            $role = $query[1];
+
+         if($password == $check_password){
                 header("Location:messages.php");
                 $_SESSION['username'] = $username;
+                $_SESSION['loggedIn'] = true;
+                echo $role;
+
+                if($role == "Administrator"){
+                    $_SESSION['admin'] = true;
+                }
                 exit();
             }else{
                 header("Location:login.php?error=Wrong password");

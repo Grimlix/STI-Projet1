@@ -23,6 +23,11 @@ $file_db->setAttribute(PDO::ATTR_ERRMODE,
 <?php
     $receiverValue = "";
 
+    if(!$_SESSION['loggedIn']){
+        header("Location:login.php?error=Access without logging in");
+        exit();
+    }
+
     //Quand on appuye sur "send message"
     if (isset($_POST['submit_button_message']) && !empty($_POST['message'])
         && !empty($_POST['subject']) && !empty($_POST['to'])) {

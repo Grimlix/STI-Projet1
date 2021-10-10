@@ -37,7 +37,7 @@ $_SESSION['messageId'] = null;
             header("Location:sign_up.php?error=Username already used");
             exit();
         }
-        $create_user = "INSERT INTO users (username, password, role, validity)
+        $create_user = "INSERT INTO users (username, password, roles, validity)
                         VALUES ('{$username}', '{$password}', 'Collaborator', 1)";
 
         $file_db->exec($create_user);

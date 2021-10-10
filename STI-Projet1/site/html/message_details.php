@@ -21,14 +21,19 @@ $file_db->setAttribute(PDO::ATTR_ERRMODE,
 <body>
 
 <?php
-//quand on clique sur "answer"
-if (isset($_SESSION['messageId'])){
-    $id = $_SESSION['messageId'];
-    $sender = $file_db->query("SELECT sender FROM messages WHERE id='{$id}'")->fetch()[0];
-    $subject = $file_db->query("SELECT subject FROM messages WHERE id='{$id}'")->fetch()[0];
-    $message = $file_db->query("SELECT message FROM messages WHERE id='{$id}'")->fetch()[0];
-    $dateOfReceipt = $file_db->query("SELECT dateOfReceipt FROM messages WHERE id='{$id}'")->fetch()[0];
-}
+
+    if(!$_SESSION['loggedIn']){
+        header("Location:login.php?error=Access without logging in");
+        exit();
+    }
+    //quand on clique sur "answer"
+    if (isset($_SESSION['messageId'])){
+        $id = $_SESSION['messageId'];
+        $sender = $file_db->query("SELECT sender FROM messages WHERE id='{$id}'")->fetch()[0];
+        $subject = $file_db->query("SELECT subject FROM messages WHERE id='{$id}'")->fetch()[0];
+        $message = $file_db->query("SELECT message FROM messages WHERE id='{$id}'")->fetch()[0];
+        $dateOfReceipt = $file_db->query("SELECT dateOfReceipt FROM messages WHERE id='{$id}'")->fetch()[0];
+    }
 
 ?>
 
