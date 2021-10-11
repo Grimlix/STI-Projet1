@@ -51,15 +51,8 @@ unset($_SESSION['messageId']);
         $id = $_POST['messageId'];
         $delete_message = "DELETE FROM messages WHERE id ='{$id}'";
         $file_db->exec($delete_message);
-    }else if(isset($_POST['answer_button'])){
-        header("Location:message.php");
-        $_SESSION['messageId'] = $_POST['messageId'];
-        exit();
-    }else if(isset($_POST['details_button'])){
-        header("Location:message_details.php");
-        $_SESSION['messageId'] = $_POST['messageId'];
-        exit();
     }
+
 ?>
 <!-- Boutons de navigation -->
 <div class="nav">
@@ -109,12 +102,20 @@ unset($_SESSION['messageId']);
                         <td><?= $message[3]; ?></td>
                         <td><?= $message[1]; ?></td>
                         <td>
-                            <form role="form" method="post" action="<?php echo $_SERVER["PHP_SELF"];?>" style="display: inline">
-                                <input type="hidden" id="messageId" name="messageId" value="<?php echo $message[0]; ?>"/>
-                                <input type="submit" value="Details" name="details_button" class="btn btn-primary"/>
-                                <input type="submit" value="Answer" name="answer_button" class="btn btn-success"/>
-                                <input type="submit" value="Delete" name="delete_button" class="btn btn-danger"/>
-                            </form>
+                            <div class="container">
+                                <form role="form" method="post" action="message_details.php" style="display: inline">
+                                    <input type="hidden" id="messageId" name="messageId" value="<?php echo $message[0]; ?>"/>
+                                    <input type="submit" value="Details" name="details_button" class="btn btn-primary"/>
+                                </form>
+                                <form role="form" method="post" action="message.php" style="display: inline">
+                                    <input type="hidden" id="messageId" name="messageId" value="<?php echo $message[0]; ?>"/>
+                                    <input type="submit" value="Answer" name="answer_button" class="btn btn-success"/>
+                                </form>
+                                <form role="form" method="post" action="<?php echo $_SERVER["PHP_SELF"];?>" style="display: inline">
+                                    <input type="hidden" id="messageId" name="messageId" value="<?php echo $message[0]; ?>"/>
+                                    <input type="submit" value="Delete" name="delete_button" class="btn btn-danger"/>
+                                </form>
+                            </div>
                         </td>
                     </tr>
 

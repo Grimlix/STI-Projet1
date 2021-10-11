@@ -69,9 +69,8 @@ if(!$validity){
 
     }
     //quand on clique sur "answer"
-    if (isset($_SESSION['messageId'])){
-        $id = $_SESSION['messageId'];
-        $receiverValue = $file_db->query("SELECT sender FROM messages WHERE id='{$id}'")->fetch()[0];
+    if (isset($_POST['answer_button'])){
+        $receiverValue = $file_db->query("SELECT sender FROM messages WHERE id='{$_POST['messageId']}'")->fetch()[0];
     }
 
 ?>

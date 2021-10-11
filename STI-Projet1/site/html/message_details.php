@@ -34,8 +34,8 @@ if(!$validity){
         exit();
     }
     //quand on clique sur "answer"
-    if (isset($_SESSION['messageId'])){
-        $id = $_SESSION['messageId'];
+    if (isset($_POST['details_button'])){
+        $id = $_POST['messageId'];
         $sender = $file_db->query("SELECT sender FROM messages WHERE id='{$id}'")->fetch()[0];
         $subject = $file_db->query("SELECT subject FROM messages WHERE id='{$id}'")->fetch()[0];
         $message = $file_db->query("SELECT message FROM messages WHERE id='{$id}'")->fetch()[0];
