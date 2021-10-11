@@ -6,6 +6,14 @@ $file_db = new PDO('sqlite:/usr/share/nginx/databases/database.sqlite');
 $file_db->setAttribute(PDO::ATTR_ERRMODE,
     PDO::ERRMODE_EXCEPTION);
 
+$query = $file_db->query("SELECT roles, validity FROM users WHERE username='{$_SESSION['username']}'")->fetch();
+$role = $query[0];
+$validity = $query[1];
+if(!$validity){
+    header("Location:login.php?error=Validity is disable");
+    exit();
+}
+
 unset($_SESSION['messageId']);
 ?>
 
@@ -64,10 +72,10 @@ unset($_SESSION['messageId']);
     <form action="message.php" method="post">
         <input type="submit" name="button_new_message" value="New message">
     </form>
-    <form <?php if (!$_SESSION['admin']){ ?> style="display:none"<?php } ?> action="admin.php" method="post">
+    <form <?php if (!$role){ ?> style="display:none"<?php } ?> action="admin.php" method="post">
         <input type="submit" name="button_admin" value="Admin">
     </form>
-    <form <?php if (!$_SESSION['admin']){ ?> style="display:none"<?php } ?> action="add_user.php" method="post">
+    <form <?php if (!$role){ ?> style="display:none"<?php } ?> action="add_user.php" method="post">
         <input type="submit" name="button_new_message" value="Add user">
     </form>
 </div>

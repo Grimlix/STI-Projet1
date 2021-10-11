@@ -60,16 +60,11 @@ $file_db->setAttribute(PDO::ATTR_ERRMODE,
                     exit();
                 }
 
-
                 header("Location:messages.php");
                 $_SESSION['username'] = $username;
                 $_SESSION['loggedIn'] = true;
-                echo $role;
-
-                if($role){
-                    $_SESSION['admin'] = true;
-                }
                 exit();
+
             }else{
                 header("Location:login.php?error=Wrong password");
                 exit();

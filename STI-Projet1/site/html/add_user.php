@@ -1,20 +1,24 @@
 <?php
 session_start();
 
-if(!$_SESSION['loggedIn']){
-    header("Location:login.php?error=Access without logging in");
-    exit();
-}else if(!$_SESSION['admin']){
-    header("Location:messages.php?error=Not sufficient permissions");
-    exit();
-}
-
-
 // Create (connect to) SQLite database in file
 $file_db = new PDO('sqlite:/usr/share/nginx/databases/database.sqlite');
 // Set errormode to exceptions
 $file_db->setAttribute(PDO::ATTR_ERRMODE,
     PDO::ERRMODE_EXCEPTION);
+
+if(!$_SESSION['loggedIn']){
+    header("Location:login.php?error=Access without logging in");
+    exit();
+}
+
+$query = $file_db->query("SELECT roles FROM users WHERE username='{$_SESSION['username']}'")->fetch();
+$role = $query[0];
+if(!$role){
+    header("Location:messages.php?error=Not sufficient permissions");
+    exit();
+}
+
 
 unset($_SESSION['messageId']);
 
@@ -37,8 +41,7 @@ unset($_SESSION['messageId']);
 <?php
 
     if (isset($_POST['add_user_button'])){
-        echo "adduserbutton ";
-        if (!empty($_POST['username']) && !empty($_POST['password']) && !empty($_POST['role']) && !empty($_POST['validity'])){
+        if (!empty($_POST['username']) && !empty($_POST['password'])){
             $username = $_POST['username'];
             $password = $_POST['password'];
             $role = $_POST['role'];
