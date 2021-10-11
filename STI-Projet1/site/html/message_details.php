@@ -34,7 +34,8 @@ if(!$validity){
         header("Location:login.php?error=Access without logging in");
         exit();
     }
-    //quand on clique sur "answer"
+
+    //quand on clique sur "details"
     if (isset($_POST['details_button'])){
         $id = $_POST['messageId'];
         $sender = $file_db->query("SELECT sender FROM messages WHERE id='{$id}'")->fetch()[0];

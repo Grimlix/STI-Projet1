@@ -19,10 +19,6 @@ if(!$role){
     exit();
 }
 
-
-unset($_SESSION['messageId']);
-
-
 ?>
 
 <!DOCTYPE html>
@@ -40,6 +36,7 @@ unset($_SESSION['messageId']);
 
 <?php
 
+    // add user button
     if (isset($_POST['add_user_button'])){
         if (!empty($_POST['username']) && !empty($_POST['password'])){
             $username = $_POST['username'];
@@ -49,11 +46,11 @@ unset($_SESSION['messageId']);
 
             //We make sure the username chosen is uniq
             $check_username = $file_db->query("SELECT username FROM users WHERE username='{$username}'")->fetch()[0];
-
             if(empty($check_username)){
                 $file_db->exec("INSERT INTO users 
                                          VALUES ('{$username}', '{$password}', '{$role}', '{$validity}')   ");
             }
+
         }
     }
 
@@ -90,19 +87,18 @@ unset($_SESSION['messageId']);
 
 
                     <tbody>
-
                         <tr>
                             <td>
-                                    <input type="text" class="form-control" name="username" placeholder="username">
+                                <input type="text" class="form-control" name="username" placeholder="username">
                             </td>
                             <td>
-                                    <input type="text" class="form-control" name="password" placeholder="password">
+                                <input type="text" class="form-control" name="password" placeholder="password">
                             </td>
                             <td>
-                                    <select name="role">
-                                        <option value="1">Administrator</option>
-                                        <option value="0">Collaborator</option>
-                                    </select>
+                                <select name="role">
+                                    <option value="1">Administrator</option>
+                                    <option value="0">Collaborator</option>
+                                </select>
                             </td>
                             <td>
                                 <select name="validity">
@@ -110,15 +106,13 @@ unset($_SESSION['messageId']);
                                     <option value="0">Disable</option>
                                 </select>                            </td>
                             <td>
-                                    <input type="submit" value="Add user" name="add_user_button" class="btn btn-danger"/>
+                                <input type="submit" value="Add user" name="add_user_button" class="btn btn-danger"/>
                             </td>
-
                         </tr>
                     </tbody>
 
 
                 </table>
-
             </div>
         </div>
     </div>

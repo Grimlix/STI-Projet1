@@ -1,6 +1,5 @@
 <?php
 
-session_destroy();
 session_start();
 // Create (connect to) SQLite database in file
 $file_db = new PDO('sqlite:/usr/share/nginx/databases/database.sqlite');
@@ -24,12 +23,13 @@ $file_db->setAttribute(PDO::ATTR_ERRMODE,
 <body>
 
 <?php
+
+    // on clear les variables de session
     if (isset($_POST['button_log_out'])){
-        //session_destroy() ne detruit pas les variables associées à la session
         $_SESSION = array();
-        session_destroy();
         session_start();
     }
+
     //si le user est deja log on le redirige sur mailbox.php
     if ($_SESSION['loggedIn']){
         header('Location:mailbox.php?error=Already logged in');
@@ -54,6 +54,7 @@ $file_db->setAttribute(PDO::ATTR_ERRMODE,
 
          if($password == $check_password){
 
+                // On contrôle la validite
                 $validity = $file_db->query("SELECT validity FROM users WHERE username='{$check_username}'")->fetch()[0];
                 if(!$validity){
                     header("Location:login.php?error=Account disable");

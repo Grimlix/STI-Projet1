@@ -47,7 +47,6 @@ if(!$validity){
 
         //Verification du destinataire
         $receiver = $file_db->query("SELECT username FROM users WHERE username='{$to}'")->fetch()[0];
-
         if (strcmp($receiver, $sender) == 0) {
             header("Location:new_message.php?error=Wrong receiver");
             exit();
@@ -69,6 +68,7 @@ if(!$validity){
         }
 
     }
+
     //quand on clique sur "answer"
     if (isset($_POST['answer_button'])){
         $receiverValue = $file_db->query("SELECT sender FROM messages WHERE id='{$_POST['messageId']}'")->fetch()[0];

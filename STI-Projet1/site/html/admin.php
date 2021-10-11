@@ -18,10 +18,6 @@ if(!$role){
     exit();
 }
 
-
-unset($_SESSION['messageId']);
-
-
 ?>
 
 <!DOCTYPE html>

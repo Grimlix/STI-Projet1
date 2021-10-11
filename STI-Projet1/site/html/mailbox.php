@@ -47,7 +47,7 @@ unset($_SESSION['messageId']);
     }
 
 
-// delete button
+    // delete button
     if (isset($_POST['delete_button'])){
         $id = $_POST['messageId'];
         $delete_message = "DELETE FROM messages WHERE id ='{$id}'";
