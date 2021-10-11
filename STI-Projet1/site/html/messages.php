@@ -36,8 +36,6 @@ unset($_SESSION['messageId']);
         header("Location:login.php?error=Access without logging in");
         exit();
     }
-    echo "role: ";
-    echo $_SESSION['admin'];
 
 
 // delete button
@@ -68,6 +66,9 @@ unset($_SESSION['messageId']);
     </form>
     <form <?php if (!$_SESSION['admin']){ ?> style="display:none"<?php } ?> action="admin.php" method="post">
         <input type="submit" name="button_admin" value="Admin">
+    </form>
+    <form <?php if (!$_SESSION['admin']){ ?> style="display:none"<?php } ?> action="add_user.php" method="post">
+        <input type="submit" name="button_new_message" value="Add user">
     </form>
 </div>
 

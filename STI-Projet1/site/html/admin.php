@@ -43,6 +43,8 @@ unset($_SESSION['messageId']);
     }else if(isset($_POST['button_password']) && !empty($_POST['new_password_text'])){
         $change_password = "UPDATE users SET password = '{$_POST['new_password_text']}' WHERE username = '{$_POST['user_password']}'";
         $file_db->exec($change_password);
+    }else if(isset($_POST['button_delete'])){
+        delete_user($_POST['user_delete']);
     }
 
     function change_validity($username){
@@ -62,11 +64,16 @@ unset($_SESSION['messageId']);
         $get_role = "SELECT role FROM users WHERE username = '{$username}'";
         $role = $file_db->query($get_role)->fetch()[0];
         if($role == "Collaborator"){
-            $role_update = "UPDATE users SET role = 'Administrator' WHERE username = '{$username}'";
+            $role_update = "UPDATE users SET role = 1 WHERE username = '{$username}'";
         }else{
-            $role_update = "UPDATE users SET role = 'Collaborator' WHERE username = '{$username}'";
+            $role_update = "UPDATE users SET role = 0 WHERE username = '{$username}'";
         }
         $file_db->exec($role_update);
+    }
+
+    function delete_user($username){
+        global $file_db;
+        $file_db->exec("DELETE FROM users WHERE username = '{$username}'");
     }
 
 
@@ -93,6 +100,7 @@ unset($_SESSION['messageId']);
                     <th scope="col">Password</th>
                     <th scope="col">Role</th>
                     <th scope="col">Validity</th>
+                    <th scope="col">Removal</th>
                 </tr>
                 </thead>
 
@@ -101,7 +109,7 @@ unset($_SESSION['messageId']);
 
                 <?php
                 $user_connected  = $_SESSION['username'];
-                $users = $file_db->query("SELECT * FROM users WHERE NOT username = '{$user_connected}'")->fetchAll();
+                $users = $file_db->query("SELECT * FROM users WHERE NOT roles = 1")->fetchAll();
 
                 foreach($users as $user): ?>
                     <tr>
@@ -123,6 +131,12 @@ unset($_SESSION['messageId']);
                             <form role="form" method="post" action="<?php echo $_SERVER["PHP_SELF"];?>" style="display: inline">
                                 <input type="hidden" name="user_validity" value="<?php echo $user[0] ?>"/>
                                 <input type="submit" value="Change validity" name="button_validity" class="btn btn-danger"/>
+                            </form>
+                        </td>
+                        <td>
+                            <form role="form" method="post" action="<?php echo $_SERVER["PHP_SELF"];?>" style="display: inline">
+                                <input type="hidden" name="user_delete" value="<?php echo $user[0] ?>"/>
+                                <input type="submit" value="Delete user" name="button_delete" class="btn btn-danger"/>
                             </form>
                         </td>
                     </tr>

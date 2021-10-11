@@ -52,7 +52,7 @@ if(isset($_POST['submit_button']) && !empty($_POST['password1'])){
     </div>
     <div class="row">
         <div class="col-sm-6 col-sm-offset-3">
-            <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
+            <form action="<?php echo $_SERVER["PHP_SELF"];?>" method="post">
                 <input type="password" class="input-lg form-control" name="password1" id="password1" autocomplete="off">
                 <input type="submit" class="col-xs-12 btn btn-primary btn-load btn-lg" name="submit_button" value="Change Password">
             </form>

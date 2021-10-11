@@ -81,7 +81,7 @@ $file_db->setAttribute(PDO::ATTR_ERRMODE,
 
 <div id="container" >
     <h1>Sending message</h1>
-    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
+    <form action="<?php echo $_SERVER["PHP_SELF"];?>" method="post">
      <ul style="list-style-type: none;">
 
          <!-- To -->

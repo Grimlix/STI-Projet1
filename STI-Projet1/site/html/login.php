@@ -53,12 +53,20 @@ $file_db->setAttribute(PDO::ATTR_ERRMODE,
             $role = $query[1];
 
          if($password == $check_password){
+
+                $validity = $file_db->query("SELECT validity FROM users WHERE username='{$check_username}'")->fetch()[0];
+                if(!$validity){
+                    header("Location:login.php?error=Account disable");
+                    exit();
+                }
+
+
                 header("Location:messages.php");
                 $_SESSION['username'] = $username;
                 $_SESSION['loggedIn'] = true;
                 echo $role;
 
-                if($role == "Administrator"){
+                if($role){
                     $_SESSION['admin'] = true;
                 }
                 exit();

@@ -19,10 +19,18 @@
     /**************************************
     * Create tables                       *
     **************************************/
+    $dropMessages = "DROP TABLE IF EXISTS messages";
+    $dropUsers = "DROP TABLE IF EXISTS users";
+
+
+    $file_db->exec($dropMessages);
+    $file_db->exec($dropUsers);
+
+
 
     // Create table messages
     $messagesTable = "CREATE TABLE IF NOT EXISTS messages (
-                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
                     sender TEXT ,
                     receiver TEXT,
                     subject TEXT, 
@@ -36,10 +44,15 @@
     $usersTable = "CREATE TABLE IF NOT EXISTS users (
        username TEXT PRIMARY KEY,
        password TEXT,
-       roles TEXT,
-       validity INTEGER)";
+       roles BOOLEAN  DEFAULT 0,
+       validity BOOLEAN  DEFAULT 1)";
 
     $file_db->exec($usersTable);
+
+    $insertAdmin = "INSERT INTO users (username, password, roles)
+                    VALUES ('admin', 'admin', 1)";
+
+    $file_db->exec($insertAdmin);
 
 
   }
