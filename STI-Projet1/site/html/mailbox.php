@@ -10,7 +10,7 @@ $query = $file_db->query("SELECT roles, validity FROM users WHERE username='{$_S
 $role = $query[0];
 $validity = $query[1];
 if(!$validity){
-    header("Location:login.php?error=Validity is disable");
+    header("Location:login.php?error=Account disable");
     $_SESSION = array();
     exit();
 }

@@ -9,7 +9,7 @@ $file_db->setAttribute(PDO::ATTR_ERRMODE,
 $query = $file_db->query("SELECT validity FROM users WHERE username='{$_SESSION['username']}'")->fetch();
 $validity = $query[0];
 if(!$validity){
-    header("Location:login.php?error=Validity is disable");
+    header("Location:login.php?error=Account disable");
     $_SESSION = array();
     exit();
 }
