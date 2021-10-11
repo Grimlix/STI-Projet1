@@ -15,7 +15,7 @@ if(!$_SESSION['loggedIn']){
 $query = $file_db->query("SELECT roles FROM users WHERE username='{$_SESSION['username']}'")->fetch();
 $role = $query[0];
 if(!$role){
-    header("Location:messages.php?error=Not sufficient permissions");
+    header("Location:mailbox.php?error=Not sufficient permissions");
     exit();
 }
 
@@ -66,7 +66,7 @@ unset($_SESSION['messageId']);
     <form action="login.php" method="post">
         <input type="submit" name="button_log_out" value="Log out">
     </form>
-    <form action="messages.php" method="post">
+    <form action="mailbox.php" method="post">
         <input type="submit" name="button_new_message" value="Home">
     </form>
 </div>

@@ -11,6 +11,7 @@ $role = $query[0];
 $validity = $query[1];
 if(!$validity){
     header("Location:login.php?error=Validity is disable");
+    $_SESSION = array();
     exit();
 }
 
@@ -62,7 +63,7 @@ unset($_SESSION['messageId']);
     <form action="change_password.php" method="post">
         <input type="submit" name="button_change_password" value="Change password">
     </form>
-    <form action="message.php" method="post">
+    <form action="new_message.php" method="post">
         <input type="submit" name="button_new_message" value="New message">
     </form>
     <form <?php if (!$role){ ?> style="display:none"<?php } ?> action="admin.php" method="post">
@@ -107,7 +108,7 @@ unset($_SESSION['messageId']);
                                     <input type="hidden" id="messageId" name="messageId" value="<?php echo $message[0]; ?>"/>
                                     <input type="submit" value="Details" name="details_button" class="btn btn-primary"/>
                                 </form>
-                                <form role="form" method="post" action="message.php" style="display: inline">
+                                <form role="form" method="post" action="new_message.php" style="display: inline">
                                     <input type="hidden" id="messageId" name="messageId" value="<?php echo $message[0]; ?>"/>
                                     <input type="submit" value="Answer" name="answer_button" class="btn btn-success"/>
                                 </form>

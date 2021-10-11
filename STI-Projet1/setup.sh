@@ -6,8 +6,7 @@ path="C:\Users\nichu\Desktop\HEIG-VD\Annee3\STI\STI-Projet1\STI-Projet1\site"
 if [ -z "$sti_project_docker" ]
 then
 	echo 'Image is not built, we are building it.'
-	echo "\"${PWD}/site\""
-	docker run -ti -v "\"${PWD}/site\"":/usr/share/nginx/ -d -p 8080:80 --name sti_project --hostname sti arubinst/sti:project2018
+	docker run -ti -v "$PWD/site":/usr/share/nginx/ -d -p 8080:80 --name sti_project --hostname sti arubinst/sti:project2018
 else
 	echo 'Image already built, we are running it'
 	docker_started=$(docker ps | grep 'sti_project')
@@ -29,5 +28,5 @@ docker exec -u root sti_project service php5-fpm start
 echo 'php5-fpm started'
 
 echo 'Database setup'
-curl http://localhost:8080/DB_init.php
+chmod a+w site/databases/database.sqlite
 curl http://localhost:8080/DB_init.php

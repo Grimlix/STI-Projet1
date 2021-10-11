@@ -30,9 +30,9 @@ $file_db->setAttribute(PDO::ATTR_ERRMODE,
         session_destroy();
         session_start();
     }
-    //si le user est deja log on le redirige sur messages.php
+    //si le user est deja log on le redirige sur mailbox.php
     if ($_SESSION['loggedIn']){
-        header('Location:messages.php?error=Already logged in');
+        header('Location:mailbox.php?error=Already logged in');
         exit();
     }
 
@@ -60,7 +60,7 @@ $file_db->setAttribute(PDO::ATTR_ERRMODE,
                     exit();
                 }
 
-                header("Location:messages.php");
+                header("Location:mailbox.php");
                 $_SESSION['username'] = $username;
                 $_SESSION['loggedIn'] = true;
                 exit();

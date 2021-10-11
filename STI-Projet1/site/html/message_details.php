@@ -10,6 +10,7 @@ $query = $file_db->query("SELECT validity FROM users WHERE username='{$_SESSION[
 $validity = $query[0];
 if(!$validity){
     header("Location:login.php?error=Validity is disable");
+    $_SESSION = array();
     exit();
 }
 
@@ -49,7 +50,7 @@ if(!$validity){
     <form action="login.php" method="post">
         <input type="submit" name="button_log_out" value="Log out">
     </form>
-    <form action="messages.php" method="post">
+    <form action="mailbox.php" method="post">
         <input type="submit" name="button_new_message" value="Home">
     </form>
 </div>

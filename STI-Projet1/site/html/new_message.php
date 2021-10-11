@@ -10,6 +10,7 @@ $query = $file_db->query("SELECT validity FROM users WHERE username='{$_SESSION[
 $validity = $query[0];
 if(!$validity){
     header("Location:login.php?error=Validity is disable");
+    $_SESSION = array();
     exit();
 }
 
@@ -48,7 +49,7 @@ if(!$validity){
         $receiver = $file_db->query("SELECT username FROM users WHERE username='{$to}'")->fetch()[0];
 
         if (strcmp($receiver, $sender) == 0) {
-            header("Location:message.php?error=Wrong receiver");
+            header("Location:new_message.php?error=Wrong receiver");
             exit();
         } else if (!empty($receiver)) {
             echo 'Message sent';
@@ -62,7 +63,7 @@ if(!$validity){
             $file_db->exec($create_message);
 
 
-            header("Location:messages.php");
+            header("Location:mailbox.php");
             $_SESSION['messageId'] = null;
             exit();
         }
@@ -79,7 +80,7 @@ if(!$validity){
     <form action="login.php" method="post">
         <input type="submit" name="button_log_out" value="Log out">
     </form>
-    <form action="messages.php" method="post">
+    <form action="mailbox.php" method="post">
         <input type="submit" name="button_new_message" value="Home">
     </form>
 </div>
