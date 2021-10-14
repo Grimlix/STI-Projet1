@@ -51,7 +51,6 @@ if(!$validity){
             header("Location:new_message.php?error=Wrong receiver");
             exit();
         } else if (!empty($receiver)) {
-            echo 'Message sent';
 
             date_default_timezone_set('Europe/Zurich');
             $date = date('m/d/Y h:i:s a', time());
@@ -61,9 +60,7 @@ if(!$validity){
 
             $file_db->exec($create_message);
 
-
             header("Location:mailbox.php");
-            $_SESSION['messageId'] = null;
             exit();
         }
 
@@ -106,7 +103,7 @@ if(!$validity){
          <!-- Message Text -->
       <li>
        <label for="Message">Message</label> </br>
-       <textarea name="message" id="message" cols="45" rows="15"></textarea>
+       <textarea type="text" name="message" id="message" cols="45" rows="15"></textarea>
       </li>
 
          <!-- Submit -->
