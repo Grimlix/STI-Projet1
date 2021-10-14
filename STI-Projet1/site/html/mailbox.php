@@ -15,7 +15,6 @@ if(!$validity){
     exit();
 }
 
-unset($_SESSION['messageId']);
 ?>
 
 <!DOCTYPE html>

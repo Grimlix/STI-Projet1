@@ -16,7 +16,6 @@ else
 	else
 		echo 'Starting the image'
 		docker start sti_project
-		echo 'Starting the servers now'
 	fi
 
 fi
