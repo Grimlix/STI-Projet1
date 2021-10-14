@@ -1,0 +1,12 @@
+body {
+    background: #adb5bd;
+}
+
+.LoginBox {
+    margin-top: 100px;
+    margin-left: 50px;
+}
+
+.form-group {
+    padding-bottom: 5px;
+}
