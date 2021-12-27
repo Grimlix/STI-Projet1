@@ -1,6 +1,6 @@
 #!/bin/bash
 
-sti_project_docker=$(docker ps -a | grep )
+sti_project_docker=$(docker ps -a | grep sti_project)
 
 if [ -z "$sti_project_docker" ]
 then
