@@ -11,7 +11,7 @@
   Pour une distribution Linux :
   ```bash
   git clone git@github.com:Grimlix/STI-Projet1.git
-  cd STI-Project1
+  cd STI_Project1/app
   sudo chmod +x setup.sh
   sudo ./setup.sh
   ```
@@ -19,7 +19,7 @@
   Pour Windows, il est nécessaire de modifier le fichier **setup_with_path.sh** et d'affecter à la variable path le path du dossier du projet
   ```bash
   git clone git@github.com:Grimlix/STI-Projet1.git
-  cd STI-Project1
+  cd STI-Project1/app
   sudo chmod +x setup_with_path.sh
   sudo ./setup_with_path.sh
   ```
