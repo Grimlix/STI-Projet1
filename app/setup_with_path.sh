@@ -1,7 +1,7 @@
 #!/bin/bash
 
 sti_project_docker=$(docker ps -a | grep 'sti_project')
-path="C:\Users\nichu\Desktop\HEIG-VD\Annee3\STI\STI-Projet1\STI-Projet1\site"
+path="C:\Users\Nicolas\Desktop\Laboratoires\STI\STI-Projet1\app\site"
 
 if [ -z "$sti_project_docker" ]
 then
