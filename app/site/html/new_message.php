@@ -82,7 +82,7 @@ if(!$validity){
     //quand on clique sur "answer"
     if (isset($_POST['answer_button'])){
         $stmt = $file_db->prepare("SELECT sender FROM messages WHERE id = ?");
-        $stmt->execute([$_POST['messageId']]);
+        $stmt->execute([$_SESSION['messageId']]);
         $receiverValue = $stmt->fetch()[0];
     }
 

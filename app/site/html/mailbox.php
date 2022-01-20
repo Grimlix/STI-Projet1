@@ -42,7 +42,7 @@ if(!$validity){
 
     // delete button
     if (isset($_POST['delete_button'])){
-        $id = $_POST['messageId'];
+        $id = $_SESSION['messageId'];
         $stmt = $file_db->prepare("DELETE FROM messages WHERE id = ?");
         $stmt->execute([$id]);
     }
@@ -101,15 +101,15 @@ if(!$validity){
                         <td>
                             <div class="container">
                                 <form role="form" method="post" action="message_details.php" style="display: inline">
-                                    <input type="hidden" id="messageId" name="messageId" value="<?php echo $message[0]; ?>"/>
+                                    <input type="hidden" id="messageId" name="messageId" value="<?php $_SESSION['messageId'] = $message[0]; ?>"/>
                                     <input type="submit" value="Details" name="details_button" class="btn btn-primary"/>
                                 </form>
                                 <form role="form" method="post" action="new_message.php" style="display: inline">
-                                    <input type="hidden" id="messageId" name="messageId" value="<?php echo $message[0]; ?>"/>
+                                    <input type="hidden" id="messageId" name="messageId" value="<?php $_SESSION['messageId'] = $message[0]; ?>"/>
                                     <input type="submit" value="Answer" name="answer_button" class="btn btn-success"/>
                                 </form>
                                 <form role="form" method="post" action="<?php echo $_SERVER["PHP_SELF"];?>" style="display: inline">
-                                    <input type="hidden" id="messageId" name="messageId" value="<?php echo $message[0]; ?>"/>
+                                    <input type="hidden" id="messageId" name="messageId" value="<?php $_SESSION['messageId'] = $message[0]; ?>"/>
                                     <input type="submit" value="Delete" name="delete_button" class="btn btn-danger"/>
                                 </form>
                             </div>

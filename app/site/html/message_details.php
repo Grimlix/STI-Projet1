@@ -37,7 +37,7 @@ if(!$validity){
         exit();
     }
 
-    $id = $_POST['messageId'];
+    $id = $_SESSION['messageId'];
 
     $stmt = $file_db->prepare("SELECT receiver FROM messages WHERE id = ?");
     $stmt->execute([$id]);
