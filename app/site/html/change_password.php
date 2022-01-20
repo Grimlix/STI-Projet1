@@ -20,7 +20,7 @@ if(!$validity){
 <head>
     <meta charset="*utf-8">
     <title>Password</title>
-    <!-- css (href ne fonctionne pas quand ej fais un dossier /css/fichiers.css)-->
+    <!-- css (href ne fonctionne pas quand je fais un dossier /css/fichiers.css)-->
     <link rel="stylesheet" href="bootstrap.min.css">
     <link rel="stylesheet" href="style.css">
 
@@ -32,16 +32,18 @@ if(!$validity){
 if(isset($_POST['submit_button']) && !empty($_POST['password_changed'] && !empty($_POST['actual_password']))){
 
     $username = $_SESSION['username'];
-    $actual_password = $_POST['actual_password'];
+    $actualPassword = $_POST['actual_password'];
 
     $query = $file_db->query("SELECT password FROM users WHERE username='{$username}'")->fetch();
 
     $check_password = $query[0];
 
-    if($actual_password == $check_password) {
+    if(password_verify($actualPassword, $check_password)) {
 
         $password_changed = $_POST['password_changed'];
-        $change_password = "UPDATE users SET password = '{$password_changed}' WHERE username = '{$username}'";
+        $passwordHash = password_hash($password_changed, PASSWORD_DEFAULT);
+
+        $change_password = "UPDATE users SET password = '{$passwordHash}' WHERE username = '{$username}'";
         $file_db->exec($change_password);
         header("Location:mailbox.php");
         exit();
