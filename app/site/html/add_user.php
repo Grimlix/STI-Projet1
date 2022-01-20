@@ -39,8 +39,8 @@ if(!$role){
     // add user button
     if (isset($_POST['add_user_button'])){
         if (!empty($_POST['username']) && !empty($_POST['password'])){
-            $username = $_POST['username'];
-            $password = $_POST['password'];
+            $username = httmlentities($_POST['username']);
+            $password = httmlentities($_POST['password']);
             $role = $_POST['role'];
             $validity = $_POST['validity'];
 

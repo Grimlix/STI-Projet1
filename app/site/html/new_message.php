@@ -40,10 +40,18 @@ if(!$validity){
     if (isset($_POST['submit_button_message']) && !empty($_POST['message'])
         && !empty($_POST['subject']) && !empty($_POST['to'])) {
 
-        $subject = $_POST['subject'];
-        $to = $_POST['to'];
-        $message = $_POST['message'];
+        $subject = htmlentities($_POST['subject']);
+        $to = htmlentities($_POST['to']);
+        $message = htmlentities($_POST['message']);
         $sender = $_SESSION['username'];
+
+        if(strlen($subject) > 15){
+            header("Location:new_message.php?error=Subject too long (max 15)");
+            exit();
+        }else if(strlen($to) > 20){
+            header("Location:new_message.php?error=Receiver too long (max 20)");
+            exit();
+        }
 
         //Verification du destinataire
         $receiver = $file_db->query("SELECT username FROM users WHERE username='{$to}'")->fetch()[0];
@@ -91,13 +99,13 @@ if(!$validity){
          <!-- To -->
       <li>
       <label for="to">To</label> </br>
-       <input type="text" name="to" id="to" value="<?= $receiverValue ?>"/>
+       <input type="text" name="to" id="to" maxlength="20" value="<?= htmlentities($receiverValue) ?>"/>
       </li>
 
      <!-- Subject -->
      <li>
          <label for="subject">Subject</label> </br>
-         <input type="text" name="subject" id="subject" />
+         <input type="text" name="subject" id="subject" maxlength="15" />
      </li>
 
          <!-- Message Text -->
