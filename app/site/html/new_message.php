@@ -120,6 +120,11 @@ if(!$validity){
 
     </ul>
    </form>
+
+    <p><?php if(!empty($_GET['error'])){
+            echo htmlentities($_GET['error']);
+        } ?></p>
+
 </div>
 
 </body>
