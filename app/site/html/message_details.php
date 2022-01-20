@@ -37,9 +37,19 @@ if(!$validity){
         exit();
     }
 
+    $id = $_POST['messageId'];
+
+    $stmt = $file_db->prepare("SELECT receiver FROM messages WHERE id = ?");
+    $stmt->execute([$id]);
+    $receiver = $stmt->fetch()[0];
+
+    if(strcmp($receiver, $_SESSION['username']) !== 0){
+        header("Location:mailbox.php?error=Not sufficient permissions");
+        exit();
+    }
+
     //quand on clique sur "details"
     if (isset($_POST['details_button'])){
-        $id = $_POST['messageId'];
 
         $stmt = $file_db->prepare("SELECT sender FROM messages WHERE id = ?");
         $stmt->execute([$id]);
