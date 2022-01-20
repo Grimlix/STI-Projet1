@@ -64,7 +64,7 @@ $file_db->setAttribute(PDO::ATTR_ERRMODE,
             $check_password = $query[0];
             $role = $query[1];
 
-         if($password == $check_password){
+         if(password_verify($password, $check_password)){
 
                 // On contrôle la validite
                 $validity = $file_db->query("SELECT validity FROM users WHERE username='{$check_username}'")->fetch()[0];

@@ -1,4 +1,5 @@
 <?php
+include 'utils.php';
 session_start();
 
 // Create (connect to) SQLite database in file
@@ -40,9 +41,16 @@ if(!$role){
     }else if(isset($_POST['button_role'])){
         change_role($_POST['user_role']);
     }else if(isset($_POST['button_password']) && !empty($_POST['new_password_text'])){
-        $passwordHash = password_hash(htmlentities($_POST['new_password_text']), PASSWORD_DEFAULT);
-        $change_password = "UPDATE users SET password = '{$passwordHash}' WHERE username = '{$_POST['user_password']}'";
-        $file_db->exec($change_password);
+        $newPassword = htmlentities($_POST['new_password_text']);
+        if(strongPasswordVerify($newPassword)){
+            $passwordHash = password_hash($newPassword, PASSWORD_DEFAULT);
+            $change_password = "UPDATE users SET password = '{$passwordHash}' WHERE username = '{$_POST['user_password']}'";
+            $file_db->exec($change_password);
+        }
+        else{
+            header("Location:admin.php?error=Weak Password");
+            exit();
+        }
     }else if(isset($_POST['button_delete'])){
         delete_user($_POST['user_delete']);
     }
@@ -150,6 +158,16 @@ if(!$role){
 
         </div>
     </div>
+    <p>
+        <?php if(!empty($_GET['error'])){
+            echo nl2br ("Mot de passe faible, le mot de passe doit contenir au moins :\n
+             -Une longueur de 15 caracteres\n
+             -Une majuscule et minuscule\n
+             -Un nombre\n
+             -Un caractere special\n
+             Le nom d'utilisateur doit etre de 20 caracteres maximum");
+        } ?>
+    </p>
 </div>
 
 </body>

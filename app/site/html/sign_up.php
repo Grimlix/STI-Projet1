@@ -1,4 +1,5 @@
 <?php
+include 'utils.php';
 
 // Create (connect to) SQLite database in file
 $file_db = new PDO('sqlite:/usr/share/nginx/databases/database.sqlite');
@@ -26,9 +27,13 @@ $file_db->setAttribute(PDO::ATTR_ERRMODE,
     if (isset($_POST['submit_button']) && !empty($_POST['username'])
         && !empty($_POST['password'])){
 
-        $username = $_POST['username'];
-        $password = $_POST['password'];
+        $username = htmlentities($_POST['username']);
+        $password = htmlentities($_POST['password']);
 
+        if(strlen($username) > 20){
+            header("Location:sign_up.php?error=Username too long (max 20)");
+            exit();
+        }
 
         //We make sure the username chosen is uniq
         $check_username = $file_db->query("SELECT username FROM users WHERE username='{$username}'")->fetch();
@@ -37,14 +42,20 @@ $file_db->setAttribute(PDO::ATTR_ERRMODE,
             exit();
         }
 
-        $passwordHash = password_hash($password, PASSWORD_DEFAULT);
+        if(strongPasswordVerify($password)){
+            $passwordHash = password_hash($password, PASSWORD_DEFAULT);
 
-        $create_user = "INSERT INTO users (username, password)
+            $create_user = "INSERT INTO users (username, password)
                         VALUES ('{$username}', '{$passwordHash}')";
-        $file_db->exec($create_user);
+            $file_db->exec($create_user);
 
-        header("Location:login.php");
-        exit();
+            header("Location:login.php");
+            exit();
+        }
+        else{
+            header("Location:sign_up.php?error=Weak Password");
+            exit();
+        }
     }
 
 ?>
@@ -81,6 +92,17 @@ $file_db->setAttribute(PDO::ATTR_ERRMODE,
              <input type="submit" value="Create" name="submit_button" class="btn btn-primary"/>
          </div>
      </div>
+
+     <p>
+         <?php if(!empty($_GET['error'])){
+             echo nl2br ("Mot de passe faible, le mot de passe doit contenir au moins :\n
+             -Une longueur de 15 caracteres\n
+             -Une majuscule et minuscule\n
+             -Un nombre\n
+             -Un caractere special\n
+             Le nom d'utilisateur doit etre de 20 caracteres maximum");
+         } ?>
+     </p>
 
  </div>
 </form>

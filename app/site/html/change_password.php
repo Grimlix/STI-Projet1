@@ -1,4 +1,6 @@
 <?php
+include 'utils.php';
+
 session_start();
 // Create (connect to) SQLite database in file
 $file_db = new PDO('sqlite:/usr/share/nginx/databases/database.sqlite');
@@ -39,12 +41,19 @@ if(isset($_POST['submit_button']) && !empty($_POST['password_changed'] && !empty
     $check_password = $query[0];
 
     if(password_verify($actualPassword, $check_password)) {
-        $password_changed = httmlentities($_POST['password_changed']);
-        $passwordHash = password_hash($password_changed, PASSWORD_DEFAULT);
-        $change_password = "UPDATE users SET password = '{$passwordHash}' WHERE username = '{$username}'";
-        $file_db->exec($change_password);
-        header("Location:mailbox.php");
-        exit();
+        $password_changed = htmlentities($_POST['password_changed']);
+
+        if(strongPasswordVerify($password_changed)){
+            $passwordHash = password_hash($password_changed, PASSWORD_DEFAULT);
+            $change_password = "UPDATE users SET password = '{$passwordHash}' WHERE username = '{$username}'";
+            $file_db->exec($change_password);
+            header("Location:mailbox.php");
+            exit();
+        }
+        else{
+            header("Location:change_password.php?error=Weak Password");
+            exit();
+        }
     }
 
     echo "Ancien mot de passe faux.";
@@ -79,6 +88,16 @@ if(isset($_POST['submit_button']) && !empty($_POST['password_changed'] && !empty
             </form>
         </div>
     </div>
+    <p>
+        <?php if(!empty($_GET['error'])){
+            echo nl2br ("Mot de passe faible, le mot de passe doit contenir au moins :\n
+             -Une longueur de 15 caracteres\n
+             -Une majuscule et minuscule\n
+             -Un nombre\n
+             -Un caractere special\n
+             Le nom d'utilisateur doit etre de 20 caracteres maximum");
+        } ?>
+    </p>
 </div>
 
 </body>

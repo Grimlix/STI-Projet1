@@ -1,4 +1,5 @@
 <?php
+include 'utils.php';
 session_start();
 
 // Create (connect to) SQLite database in file
@@ -35,7 +36,6 @@ if(!$role){
 <body>
 
 <?php
-
     // add user button
     if (isset($_POST['add_user_button'])){
         if (!empty($_POST['username']) && !empty($_POST['password'])){
@@ -52,9 +52,17 @@ if(!$role){
             //We make sure the username chosen is uniq
             $check_username = $file_db->query("SELECT username FROM users WHERE username='{$username}'")->fetch()[0];
             if(empty($check_username)){
-                $passwordHash = password_hash($password, PASSWORD_DEFAULT);
-                $file_db->exec("INSERT INTO users 
+                if(strongPasswordVerify($password)){
+                    $passwordHash = password_hash($password, PASSWORD_DEFAULT);
+                    $file_db->exec("INSERT INTO users 
                                          VALUES ('{$username}', '{$passwordHash}', '{$role}', '{$validity}')   ");
+                    header("Location:add_user.php");
+                    exit();
+                }
+                else{
+                    header("Location:add_user.php?error=Weak Password");
+                    exit();
+                }
             }
 
         }
@@ -119,9 +127,16 @@ if(!$role){
 
                 </table>
             </div>
-            <p><?php if(!empty($_GET['error'])){
-                    echo htmlentities($_GET['error']);
-                } ?></p>
+            <p>
+                <?php if(!empty($_GET['error'])){
+                    echo nl2br ("Mot de passe faible, le mot de passe doit contenir au moins :\n
+                    -Une longueur de 15 caracteres\n
+                    -Une majuscule et minuscule\n
+                    -Un nombre\n
+                    -Un caractere special\n
+                    Le nom d'utilisateur doit etre de 20 caracteres maximum");
+                } ?>
+            </p>
         </div>
     </div>
 </form>
