@@ -52,8 +52,9 @@ if(!$role){
             //We make sure the username chosen is uniq
             $check_username = $file_db->query("SELECT username FROM users WHERE username='{$username}'")->fetch()[0];
             if(empty($check_username)){
+                $passwordHash = password_hash($password, PASSWORD_DEFAULT);
                 $file_db->exec("INSERT INTO users 
-                                         VALUES ('{$username}', '{$password}', '{$role}', '{$validity}')   ");
+                                         VALUES ('{$username}', '{$passwordHash}', '{$role}', '{$validity}')   ");
             }
 
         }

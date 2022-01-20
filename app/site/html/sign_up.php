@@ -37,8 +37,10 @@ $file_db->setAttribute(PDO::ATTR_ERRMODE,
             exit();
         }
 
+        $passwordHash = password_hash($password, PASSWORD_DEFAULT);
+
         $create_user = "INSERT INTO users (username, password)
-                        VALUES ('{$username}', '{$password}')";
+                        VALUES ('{$username}', '{$passwordHash}')";
         $file_db->exec($create_user);
 
         header("Location:login.php");
