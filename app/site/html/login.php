@@ -69,25 +69,29 @@ $file_db->setAttribute(PDO::ATTR_ERRMODE,
             $check_password = $query[0];
             $role = $query[1];
 
-         if(password_verify($password, $check_password)){
+            if(password_verify($password, $check_password)){
 
-             $stmt = $file_db->prepare("SELECT validity FROM users WHERE username = ?");
-             $stmt->execute([$check_username]);
-             $validity = $stmt->fetch()[0];
+                $stmt = $file_db->prepare("SELECT validity FROM users WHERE username = ?");
+                $stmt->execute([$check_username]);
+                $validity = $stmt->fetch()[0];
 
-            // On contrôle la validite
-            if(!$validity){
+                // On contrôle la validite
+                if(!$validity){
                 header("Location:login.php?error=Account disable");
                 exit();
-            }
+                }
 
-            header("Location:mailbox.php");
-            $_SESSION['username'] = $username;
-            $_SESSION['loggedIn'] = true;
-            exit();
+                header("Location:mailbox.php");
+                $_SESSION['username'] = $username;
+                $_SESSION['loggedIn'] = true;
+                exit();
 
             }
         }
+
+        // On fait un password verify pour faire perdre du temps (Timing attaque)
+        password_verify($password, $check_password);
+
         header("Location:login.php?error=Wrong credencials");
         exit();
     }
