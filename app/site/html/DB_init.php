@@ -49,7 +49,7 @@
 
     $file_db->exec($usersTable);
 
-    $mdp = password_hash('admin', PASSWORD_DEFAULT);
+    $mdp = password_hash('A4UY3AUrAEQs9j%', PASSWORD_DEFAULT);
     $insertAdmin = "INSERT INTO users (username, password, roles)
                     VALUES ('admin', '{$mdp}', 1)";
 
