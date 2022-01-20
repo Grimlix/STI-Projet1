@@ -24,8 +24,6 @@ $file_db->setAttribute(PDO::ATTR_ERRMODE,
 
 <?php
 
-
-
     // on clear les variables de session
     if (isset($_POST['button_log_out'])){
         $_SESSION = array();
@@ -38,15 +36,19 @@ $file_db->setAttribute(PDO::ATTR_ERRMODE,
         exit();
     }
 
-
-    if (isset($_POST['sign_in_button']) && !empty($_POST['username'])
+    if(isset($_POST['sign_in_button']) && !empty($_POST['username'])
         && !empty($_POST['password']) && !empty($_POST['code'])){
 
-        if ($_POST['code'] == $_SESSION['captcha']) {
-            echo "Captcha valid";
+        if($_POST['code'] > 99999){
+            header("Location:login.php?error=Captcha too long");
+            exit();
         }
-        else {
-            echo "Captcha NOT valid";
+
+        if ($_POST['code'] != $_SESSION['captcha']) {
+            header("Location:login.php?error=Captcha invalid");
+            $_SESSION = array();
+            session_start();
+            exit();
         }
 
         $username = $_POST['username'];
@@ -76,13 +78,14 @@ $file_db->setAttribute(PDO::ATTR_ERRMODE,
                 $_SESSION['loggedIn'] = true;
                 exit();
 
-            }else{
-                header("Location:login.php?error=Wrong password");
-                exit();
             }
         }
+        header("Location:login.php?error=Wrong credencials");
+        exit();
     }
+
     $_SESSION['captcha'] = mt_rand(10000, 99999);
+
 ?>
 
 <!-- Boutons de navigation -->
@@ -116,8 +119,11 @@ $file_db->setAttribute(PDO::ATTR_ERRMODE,
         <div class="form-group row">
             <div class="offset-sm-2">
                 <p>Enter this number: <?php echo $_SESSION['captcha']; ?></p>
-                <p><input type="text" name="code" />
+                <p><input type="number" name="code" max="99999" /></p>
                 <input type="submit" value="Sign in" name="sign_in_button" class="btn btn-primary float-right"/>
+                <p><?php if(!empty($_GET['error'])){
+                    echo htmlentities($_GET['error']);
+                    } ?></p>
             </div>
         </div>
     </div>

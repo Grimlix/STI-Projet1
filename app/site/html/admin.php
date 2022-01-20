@@ -40,7 +40,7 @@ if(!$role){
     }else if(isset($_POST['button_role'])){
         change_role($_POST['user_role']);
     }else if(isset($_POST['button_password']) && !empty($_POST['new_password_text'])){
-        $passwordHash = password_hash($_POST['new_password_text'], PASSWORD_DEFAULT);
+        $passwordHash = password_hash(htmlentities($_POST['new_password_text']), PASSWORD_DEFAULT);
         $change_password = "UPDATE users SET password = '{$passwordHash}' WHERE username = '{$_POST['user_password']}'";
         $file_db->exec($change_password);
     }else if(isset($_POST['button_delete'])){

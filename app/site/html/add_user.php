@@ -39,10 +39,15 @@ if(!$role){
     // add user button
     if (isset($_POST['add_user_button'])){
         if (!empty($_POST['username']) && !empty($_POST['password'])){
-            $username = $_POST['username'];
-            $password = $_POST['password'];
+            $username = htmlentities($_POST['username']);
+            $password = htmlentities($_POST['password']);
             $role = $_POST['role'];
             $validity = $_POST['validity'];
+
+            if(strlen($username) > 20){
+                header("Location:add_user.php?error=Username too long (max 20)");
+                exit();
+            }
 
             //We make sure the username chosen is uniq
             $check_username = $file_db->query("SELECT username FROM users WHERE username='{$username}'")->fetch()[0];
@@ -90,7 +95,7 @@ if(!$role){
                     <tbody>
                         <tr>
                             <td>
-                                <input type="text" class="form-control" name="username" placeholder="username">
+                                <input type="text" class="form-control" name="username" placeholder="username" maxlength="20">
                             </td>
                             <td>
                                 <input type="text" class="form-control" name="password" placeholder="password">
@@ -112,9 +117,11 @@ if(!$role){
                         </tr>
                     </tbody>
 
-
                 </table>
             </div>
+            <p><?php if(!empty($_GET['error'])){
+                    echo htmlentities($_GET['error']);
+                } ?></p>
         </div>
     </div>
 </form>

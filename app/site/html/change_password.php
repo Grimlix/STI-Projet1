@@ -39,10 +39,8 @@ if(isset($_POST['submit_button']) && !empty($_POST['password_changed'] && !empty
     $check_password = $query[0];
 
     if(password_verify($actualPassword, $check_password)) {
-
-        $password_changed = $_POST['password_changed'];
+        $password_changed = httmlentities($_POST['password_changed']);
         $passwordHash = password_hash($password_changed, PASSWORD_DEFAULT);
-
         $change_password = "UPDATE users SET password = '{$passwordHash}' WHERE username = '{$username}'";
         $file_db->exec($change_password);
         header("Location:mailbox.php");
