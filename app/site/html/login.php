@@ -38,7 +38,7 @@ $file_db->setAttribute(PDO::ATTR_ERRMODE,
         exit();
     }
 
-    
+
     if (isset($_POST['sign_in_button']) && !empty($_POST['username'])
         && !empty($_POST['password']) && !empty($_POST['code'])){
 

@@ -29,14 +29,25 @@ if(!$validity){
 
 <?php
 
-if(isset($_POST['submit_button']) && !empty($_POST['password1'])){
+if(isset($_POST['submit_button']) && !empty($_POST['password_changed'] && !empty($_POST['actual_password']))){
 
-    $password1 = $_POST['password1'];
     $username = $_SESSION['username'];
-    $change_password = "UPDATE users SET password = '{$password1}' WHERE username = '{$username}'";
-    $file_db->exec($change_password);
-    header("Location:mailbox.php");
-    exit();
+    $actual_password = $_POST['actual_password'];
+
+    $query = $file_db->query("SELECT password FROM users WHERE username='{$username}'")->fetch();
+
+    $check_password = $query[0];
+
+    if($actual_password == $check_password) {
+
+        $password_changed = $_POST['password_changed'];
+        $change_password = "UPDATE users SET password = '{$password_changed}' WHERE username = '{$username}'";
+        $file_db->exec($change_password);
+        header("Location:mailbox.php");
+        exit();
+    }
+
+    echo "Ancien mot de passe faux.";
 }
 
 ?>
@@ -60,7 +71,10 @@ if(isset($_POST['submit_button']) && !empty($_POST['password1'])){
     <div class="row">
         <div class="col-sm-6 col-sm-offset-3">
             <form action="<?php echo $_SERVER["PHP_SELF"];?>" method="post">
-                <input type="password" class="input-lg form-control" name="password1" id="password1" autocomplete="off">
+                <p>Ancien mot de passe</p>
+                <input type="password" class="input-lg form-control" name="actual_password" id="actual_password" autocomplete="off">
+                <p>Nouveau mot de passe</p>
+                <input type="password" class="input-lg form-control" name="password_changed" id="password_changed" autocomplete="off">
                 <input type="submit" class="col-xs-12 btn btn-primary btn-load btn-lg" name="submit_button" value="Change Password">
             </form>
         </div>
