@@ -1,7 +1,12 @@
 * Lucas Gianinetti (Projet 1) & Nicolas Hungerbühler (Projet 1 et Projet 2) & Dylan Canton (Projet 2)
   ___
   # STI - Projet 1 et 2
-
+  
+  ## Analyse des menaces
+  
+  Le rapport de l'analyse des menaces se trouve en format pdf ou docx. Un gif se trouve à l'intérieur qui ne fonctionne pas sur PDF.
+  Nous avons mis le gif dans le dossier sous le nom "SQL_injection_GIF.gif (les infos sont dans le rapport). Autremenent il est possible
+  d'utiliser le fichier .docx qui fonctionne sous Word (Windows) ou LibreOffice (Linux).
 
   ## Mise en place
   ______
