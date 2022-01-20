@@ -6,8 +6,11 @@ $file_db = new PDO('sqlite:/usr/share/nginx/databases/database.sqlite');
 $file_db->setAttribute(PDO::ATTR_ERRMODE,
     PDO::ERRMODE_EXCEPTION);
 
-$query = $file_db->query("SELECT validity FROM users WHERE username='{$_SESSION['username']}'")->fetch();
-$validity = $query[0];
+
+$stmt = $file_db->prepare("SELECT validity FROM users WHERE username = ?");
+$stmt->execute([$_SESSION['username']]);
+$validity = $stmt->fetch()[0];
+
 if(!$validity){
     header("Location:login.php?error=Account disable");
     $_SESSION = array();
@@ -54,7 +57,10 @@ if(!$validity){
         }
 
         //Verification du destinataire
-        $receiver = $file_db->query("SELECT username FROM users WHERE username='{$to}'")->fetch()[0];
+        $stmt = $file_db->prepare("SELECT username FROM users WHERE username = ?");
+        $stmt->execute([$to]);
+        $receiver = $stmt->fetch()[0];
+
         if (strcmp($receiver, $sender) == 0) {
             header("Location:new_message.php?error=Wrong receiver");
             exit();
@@ -63,10 +69,9 @@ if(!$validity){
             date_default_timezone_set('Europe/Zurich');
             $date = date('m/d/Y h:i:s a', time());
 
-            $create_message = "INSERT INTO messages (sender, receiver, subject, message, dateOfReceipt)
-                                VALUES ('{$sender}', '{$to}', '{$subject}', '{$message}', '{$date}')";
-
-            $file_db->exec($create_message);
+            $stmt = $file_db->prepare("INSERT INTO messages (sender, receiver, subject, message, dateOfReceipt)
+                                VALUES (?, ?, ?, ?, ?)");
+            $stmt->execute([$sender, $to, $subject, $message, $date]);
 
             header("Location:mailbox.php");
             exit();
@@ -76,7 +81,9 @@ if(!$validity){
 
     //quand on clique sur "answer"
     if (isset($_POST['answer_button'])){
-        $receiverValue = $file_db->query("SELECT sender FROM messages WHERE id='{$_POST['messageId']}'")->fetch()[0];
+        $stmt = $file_db->prepare("SELECT sender FROM messages WHERE id = ?");
+        $stmt->execute([$_POST['messageId']]);
+        $receiverValue = $stmt->fetch()[0];
     }
 
 ?>

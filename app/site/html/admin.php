@@ -12,7 +12,9 @@ if(!$_SESSION['loggedIn']){
     header("Location:login.php?error=Access without logging in");
     exit();
 }
-$query = $file_db->query("SELECT roles FROM users WHERE username='{$_SESSION['username']}'")->fetch();
+$stmt = $file_db->prepare("SELECT roles FROM users WHERE username = ?");
+$stmt->execute([$_SESSION['username']]);
+$query = $stmt->fetch();
 $role = $query[0];
 if(!$role){
     header("Location:mailbox.php?error=Not sufficient permissions");
@@ -41,11 +43,12 @@ if(!$role){
     }else if(isset($_POST['button_role'])){
         change_role($_POST['user_role']);
     }else if(isset($_POST['button_password']) && !empty($_POST['new_password_text'])){
-        $newPassword = htmlentities($_POST['new_password_text']);
+        $newPassword = $_POST['new_password_text'];
         if(strongPasswordVerify($newPassword)){
             $passwordHash = password_hash($newPassword, PASSWORD_DEFAULT);
-            $change_password = "UPDATE users SET password = '{$passwordHash}' WHERE username = '{$_POST['user_password']}'";
-            $file_db->exec($change_password);
+
+            $stmt = $file_db->prepare("UPDATE users SET password = ? WHERE username = ?");
+            $stmt->execute([$passwordHash, $_POST['user_password']]);
         }
         else{
             header("Location:admin.php?error=Weak Password");
@@ -57,31 +60,40 @@ if(!$role){
 
     function change_validity($username){
         global $file_db;
-        $get_validity = "SELECT validity FROM users WHERE username = '{$username}'";
-        $validity = $file_db->query($get_validity)->fetch()[0];
+
+        $stmt = $file_db->prepare("SELECT validity FROM users WHERE username = ?");
+        $stmt->execute([$username]);
+        $validity = $stmt->fetch()[0];
+
         if($validity == 1){
-            $validity_update = "UPDATE users SET validity = 0 WHERE username = '{$username}'";
+            $stmt = $file_db->prepare("UPDATE users SET validity = 0 WHERE username = ?");
+            $stmt->execute([$username]);
         }else{
-            $validity_update = "UPDATE users SET validity = 1 WHERE username = '{$username}'";
+            $stmt = $file_db->prepare("UPDATE users SET validity = 1 WHERE username = ?");
+            $stmt->execute([$username]);
         }
-        $file_db->exec($validity_update);
     }
 
     function change_role($username){
         global $file_db;
-        $get_role = "SELECT roles FROM users WHERE username = '{$username}'";
-        $role = $file_db->query($get_role)->fetch()[0];
+
+        $stmt = $file_db->prepare("SELECT roles FROM users WHERE username = ?");
+        $stmt->execute([$username]);
+        $role = $stmt->fetch()[0];
+
         if($role == 0){
-            $role_update = "UPDATE users SET roles = 1 WHERE username = '{$username}'";
+            $stmt = $file_db->prepare("UPDATE users SET roles = 1 WHERE username = ?");
+            $stmt->execute([$username]);
         }else{
-            $role_update = "UPDATE users SET roles = 0 WHERE username = '{$username}'";
+            $stmt = $file_db->prepare("UPDATE users SET roles = 0 WHERE username = ?");
+            $stmt->execute([$username]);
         }
-        $file_db->exec($role_update);
     }
 
     function delete_user($username){
         global $file_db;
-        $file_db->exec("DELETE FROM users WHERE username = '{$username}'");
+        $stmt = $file_db->prepare("DELETE FROM users WHERE username = ?");
+        $stmt->execute([$username]);
     }
 
 
@@ -116,8 +128,10 @@ if(!$role){
                 <tbody>
 
                 <?php
-                $user_connected  = $_SESSION['username'];
-                $users = $file_db->query("SELECT * FROM users WHERE NOT roles = 1")->fetchAll();
+
+                $stmt = $file_db->prepare("SELECT * FROM users WHERE NOT roles = ?");
+                $stmt->execute([1]);
+                $users = $stmt->fetchAll();
 
                 foreach($users as $user): ?>
                     <tr>

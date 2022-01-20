@@ -6,8 +6,10 @@ $file_db = new PDO('sqlite:/usr/share/nginx/databases/database.sqlite');
 $file_db->setAttribute(PDO::ATTR_ERRMODE,
     PDO::ERRMODE_EXCEPTION);
 
-$query = $file_db->query("SELECT validity FROM users WHERE username='{$_SESSION['username']}'")->fetch();
-$validity = $query[0];
+$stmt = $file_db->prepare("SELECT validity FROM users WHERE username = ?");
+$stmt->execute([$_SESSION['username']]);
+$validity = $stmt->fetch()[0];
+
 if(!$validity){
     header("Location:login.php?error=Account disable");
     $_SESSION = array();
@@ -38,10 +40,23 @@ if(!$validity){
     //quand on clique sur "details"
     if (isset($_POST['details_button'])){
         $id = $_POST['messageId'];
-        $sender = $file_db->query("SELECT sender FROM messages WHERE id='{$id}'")->fetch()[0];
-        $subject = $file_db->query("SELECT subject FROM messages WHERE id='{$id}'")->fetch()[0];
-        $message = $file_db->query("SELECT message FROM messages WHERE id='{$id}'")->fetch()[0];
-        $dateOfReceipt = $file_db->query("SELECT dateOfReceipt FROM messages WHERE id='{$id}'")->fetch()[0];
+
+        $stmt = $file_db->prepare("SELECT sender FROM messages WHERE id = ?");
+        $stmt->execute([$id]);
+        $sender = $stmt->fetch()[0];
+
+        $stmt = $file_db->prepare("SELECT subject FROM messages WHERE id = ?");
+        $stmt->execute([$id]);
+        $subject = $stmt->fetch()[0];
+
+        $stmt = $file_db->prepare("SELECT message FROM messages WHERE id = ?");
+        $stmt->execute([$id]);
+        $message = $stmt->fetch()[0];
+
+        $stmt = $file_db->prepare("SELECT dateOfReceipt FROM messages WHERE id = ?");
+        $stmt->execute([$id]);
+        $dateOfReceipt = $stmt->fetch()[0];
+
     }
 
 ?>

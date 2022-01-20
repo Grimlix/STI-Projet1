@@ -36,7 +36,10 @@ $file_db->setAttribute(PDO::ATTR_ERRMODE,
         }
 
         //We make sure the username chosen is uniq
-        $check_username = $file_db->query("SELECT username FROM users WHERE username='{$username}'")->fetch();
+        $stmt = $file_db->prepare("SELECT username FROM users WHERE username = ?");
+        $stmt->execute([$username]);
+        $check_username = $stmt->fetch();
+
         if($check_username != false){
             header("Location:sign_up.php?error=Username already used");
             exit();
@@ -45,9 +48,9 @@ $file_db->setAttribute(PDO::ATTR_ERRMODE,
         if(strongPasswordVerify($password)){
             $passwordHash = password_hash($password, PASSWORD_DEFAULT);
 
-            $create_user = "INSERT INTO users (username, password)
-                        VALUES ('{$username}', '{$passwordHash}')";
-            $file_db->exec($create_user);
+            $stmt = $file_db->prepare("INSERT INTO users (username, password)
+                        VALUES (?, ?)");
+            $stmt->execute([$username, $passwordHash]);
 
             header("Location:login.php");
             exit();

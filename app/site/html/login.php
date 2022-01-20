@@ -56,27 +56,35 @@ $file_db->setAttribute(PDO::ATTR_ERRMODE,
 
 
         //We make sure the username chosen is uniq
-        $check_username = $file_db->query("SELECT username FROM users WHERE username='{$username}'")->fetch()[0];
+        $stmt = $file_db->prepare("SELECT username FROM users WHERE username = ?");
+        $stmt->execute([$username]);
+        $check_username = $stmt->fetch()[0];
 
         if(!empty($check_username)){
-            $query = $file_db->query("SELECT password, roles FROM users WHERE username='{$check_username}'")->fetch();
+
+            $stmt = $file_db->prepare("SELECT password, roles FROM users WHERE username = ?");
+            $stmt->execute([$check_username]);
+            $query = $stmt->fetch();
 
             $check_password = $query[0];
             $role = $query[1];
 
          if(password_verify($password, $check_password)){
 
-                // On contrôle la validite
-                $validity = $file_db->query("SELECT validity FROM users WHERE username='{$check_username}'")->fetch()[0];
-                if(!$validity){
-                    header("Location:login.php?error=Account disable");
-                    exit();
-                }
+             $stmt = $file_db->prepare("SELECT validity FROM users WHERE username = ?");
+             $stmt->execute([$check_username]);
+             $validity = $stmt->fetch()[0];
 
-                header("Location:mailbox.php");
-                $_SESSION['username'] = $username;
-                $_SESSION['loggedIn'] = true;
+            // On contrôle la validite
+            if(!$validity){
+                header("Location:login.php?error=Account disable");
                 exit();
+            }
+
+            header("Location:mailbox.php");
+            $_SESSION['username'] = $username;
+            $_SESSION['loggedIn'] = true;
+            exit();
 
             }
         }

@@ -6,7 +6,10 @@ $file_db = new PDO('sqlite:/usr/share/nginx/databases/database.sqlite');
 $file_db->setAttribute(PDO::ATTR_ERRMODE,
     PDO::ERRMODE_EXCEPTION);
 
-$query = $file_db->query("SELECT roles, validity FROM users WHERE username='{$_SESSION['username']}'")->fetch();
+$stmt = $file_db->prepare("SELECT roles, validity FROM users WHERE username = ?");
+$stmt->execute([$_SESSION['username']]);
+$query = $stmt->fetch();
+
 $role = $query[0];
 $validity = $query[1];
 if(!$validity){
@@ -37,12 +40,11 @@ if(!$validity){
         exit();
     }
 
-
     // delete button
     if (isset($_POST['delete_button'])){
         $id = $_POST['messageId'];
-        $delete_message = "DELETE FROM messages WHERE id ='{$id}'";
-        $file_db->exec($delete_message);
+        $stmt = $file_db->prepare("DELETE FROM messages WHERE id = ?");
+        $stmt->execute([$id]);
     }
 
 ?>
@@ -86,7 +88,10 @@ if(!$validity){
                 <?php
                 $receiver  = $_SESSION['username'];
 
-                $messages = $file_db->query("SELECT * FROM messages WHERE receiver='{$receiver}'")->fetchAll();
+                $stmt = $file_db->prepare("SELECT * FROM messages WHERE receiver = ?");
+                $stmt->execute([$receiver]);
+                $messages = $stmt->fetchAll();
+
                 //[0][1] -> sender
                 foreach($messages as $message): ?>
                     <tr>

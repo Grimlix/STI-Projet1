@@ -2,13 +2,18 @@
 include 'utils.php';
 
 session_start();
+
 // Create (connect to) SQLite database in file
 $file_db = new PDO('sqlite:/usr/share/nginx/databases/database.sqlite');
+
 // Set errormode to exceptions
 $file_db->setAttribute(PDO::ATTR_ERRMODE,
     PDO::ERRMODE_EXCEPTION);
 
-$query = $file_db->query("SELECT validity FROM users WHERE username='{$_SESSION['username']}'")->fetch();
+$stmt = $file_db->prepare("SELECT validity FROM users WHERE username = ?");
+$stmt->execute([$_SESSION['username']]);
+$query = $stmt->fetch();
+
 $validity = $query[0];
 if(!$validity){
     header("Location:login.php?error=Validity is disable");
@@ -36,7 +41,9 @@ if(isset($_POST['submit_button']) && !empty($_POST['password_changed'] && !empty
     $username = $_SESSION['username'];
     $actualPassword = $_POST['actual_password'];
 
-    $query = $file_db->query("SELECT password FROM users WHERE username='{$username}'")->fetch();
+    $stmt = $file_db->prepare("SELECT password FROM users WHERE username = ?");
+    $stmt->execute([$_SESSION['username']]);
+    $query = $stmt->fetch();
 
     $check_password = $query[0];
 
@@ -45,8 +52,10 @@ if(isset($_POST['submit_button']) && !empty($_POST['password_changed'] && !empty
 
         if(strongPasswordVerify($password_changed)){
             $passwordHash = password_hash($password_changed, PASSWORD_DEFAULT);
-            $change_password = "UPDATE users SET password = '{$passwordHash}' WHERE username = '{$username}'";
-            $file_db->exec($change_password);
+
+            $stmt = $file_db->prepare("UPDATE users SET password = ? WHERE username = ?");
+            $stmt->execute([$passwordHash, $_SESSION['username']]);
+
             header("Location:mailbox.php");
             exit();
         }

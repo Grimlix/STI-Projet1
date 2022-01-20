@@ -13,8 +13,11 @@ if(!$_SESSION['loggedIn']){
     exit();
 }
 
-$query = $file_db->query("SELECT roles FROM users WHERE username='{$_SESSION['username']}'")->fetch();
+$stmt = $file_db->prepare("SELECT roles FROM users WHERE username = ?");
+$stmt->execute([$_SESSION['username']]);
+$query = $stmt->fetch();
 $role = $query[0];
+
 if(!$role){
     header("Location:mailbox.php?error=Not sufficient permissions");
     exit();
@@ -54,8 +57,11 @@ if(!$role){
             if(empty($check_username)){
                 if(strongPasswordVerify($password)){
                     $passwordHash = password_hash($password, PASSWORD_DEFAULT);
-                    $file_db->exec("INSERT INTO users 
-                                         VALUES ('{$username}', '{$passwordHash}', '{$role}', '{$validity}')   ");
+
+                    $stmt = $file_db->prepare("INSERT INTO users 
+                                         VALUES (?, ?, ?, ?)");
+                    $stmt->execute([$username, $passwordHash, $role, $validity]);
+
                     header("Location:add_user.php");
                     exit();
                 }
