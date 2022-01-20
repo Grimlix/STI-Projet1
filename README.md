@@ -1,6 +1,6 @@
-* Lucas Gianinetti & Nicolas Hungerbühler 
+* Lucas Gianinetti (Projet 1) & Nicolas Hungerbühler (Projet 1 et Projet 2) & Dylan Canton (Projet 2)
   ___
-  # STI -Projet 1
+  # STI - Projet 1 et 2
 
 
   ## Mise en place
@@ -23,6 +23,12 @@
   sudo chmod +x setup_with_path.sh
   sudo ./setup_with_path.sh
   ```
+  Il peut avoir une erreur de droit sur le dossier /site. Si c'est le cas il faut lancer cette commande :
+    ```bash
+  cd STI-Project1/app
+  sudo chmod -R 777 /site
+  ```
+  
   ### Arrêter le serveur 
   ```docker stop sti_project``` 
 
@@ -36,9 +42,9 @@
   * Les différentes pages se trouvent à l'adresse http://localhost:8080/[nom_page], par defaut on tombe sur la page de login.
   * Un administrateur par défaut est inséré dans la base de données :
     * username: admin
-    * password: admin
+    * password: A4UY3AUrAEQs9j%
   * Aucune page ne permet de supprimer un administrateur une fois celui-ci créé. Dans le cas ou il faudrait en supprimer un, il faut :
-    * Accéder à la page d'administration de la base de donnée : http://localhost:8080/phpliteadmin.php
+    * Accéder à la page d'administration de la base de donnée : http://localhost:8080/phpliteadmin.php (Login : admin:admin)
     * Accéder à la table users.
     * Supprimer l'entrée correspondant à l'administrateur non désiré.
 
