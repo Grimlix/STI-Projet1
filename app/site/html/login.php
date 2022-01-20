@@ -24,6 +24,8 @@ $file_db->setAttribute(PDO::ATTR_ERRMODE,
 
 <?php
 
+
+
     // on clear les variables de session
     if (isset($_POST['button_log_out'])){
         $_SESSION = array();
@@ -36,8 +38,16 @@ $file_db->setAttribute(PDO::ATTR_ERRMODE,
         exit();
     }
 
+    
     if (isset($_POST['sign_in_button']) && !empty($_POST['username'])
-        && !empty($_POST['password'])){
+        && !empty($_POST['password']) && !empty($_POST['code'])){
+
+        if ($_POST['code'] == $_SESSION['captcha']) {
+            echo "Captcha valid";
+        }
+        else {
+            echo "Captcha NOT valid";
+        }
 
         $username = $_POST['username'];
         $password = $_POST['password'];
@@ -72,6 +82,7 @@ $file_db->setAttribute(PDO::ATTR_ERRMODE,
             }
         }
     }
+    $_SESSION['captcha'] = mt_rand(10000, 99999);
 ?>
 
 <!-- Boutons de navigation -->
@@ -104,10 +115,11 @@ $file_db->setAttribute(PDO::ATTR_ERRMODE,
         <!-- Login page -->
         <div class="form-group row">
             <div class="offset-sm-2">
+                <p>Enter this number: <?php echo $_SESSION['captcha']; ?></p>
+                <p><input type="text" name="code" />
                 <input type="submit" value="Sign in" name="sign_in_button" class="btn btn-primary float-right"/>
             </div>
         </div>
-
     </div>
 </form>
 

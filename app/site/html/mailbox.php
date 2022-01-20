@@ -32,14 +32,6 @@ if(!$validity){
 
 <?php
 
-    /*
-    ->query() : requête qui ne modifie pas la base de données
-    ->fetch() : récupérer la donnée de la requête (toujours dans un array)
-    ->fetchAll() : récupère tous array[0][]
-    ->exec() : requête qui modifie la base de données
-
-    */
-
     if(!$_SESSION['loggedIn']){
         header("Location:login.php?error=Access without logging in");
         exit();
